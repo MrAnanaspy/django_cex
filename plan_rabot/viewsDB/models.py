@@ -53,6 +53,9 @@ class Detail(models.Model):
                              null=True, blank=True))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.EAM} - {self.name}"
+
     class Meta:
         db_table = "Detail"
         verbose_name_plural = 'Детали'
@@ -88,6 +91,9 @@ class Materials(models.Model):
              (max_length=50, verbose_name='№ партии', null=True, blank=True))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.shape}: {self.name}. № Партии:{self.party} "
+
     class Meta:
         db_table = "Materials"
         verbose_name_plural = 'Материалы'
@@ -105,6 +111,9 @@ class Materials3D(models.Model):
     link = models.URLField(verbose_name='Ссылка на материал', null=True, blank=True)
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.name} - {self.printing_technology}"
+
     class Meta:
         db_table = "Materials3D"
         verbose_name_plural = 'Материалы 3Д'
@@ -119,6 +128,9 @@ class Equipment(models.Model):
     link = models.URLField(verbose_name='Ссылка на инструмент', null=True, blank=True)
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
+    def __str__(self):
+        return f"{self.name}: {self.designation}"
+
     class Meta:
         db_table = "Equipment"
         verbose_name_plural = 'Оборудование'
@@ -128,6 +140,9 @@ class AdditionalEexpenses(models.Model):
     designation = models.CharField(max_length=100, verbose_name='Обозначение инструмента')
     appeal_id = models.IntegerField(verbose_name='Номер заявки')
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.appeal_id}: {self.designation}"
 
     class Meta:
         db_table = "AdditionalExpenses"
@@ -197,6 +212,9 @@ class Appeal(models.Model):
     equipment_price = (models.IntegerField
                       (verbose_name='Прямые затраты на инструмент', null=True, blank=True))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.EAM}"
 
     class Meta:
         db_table = "Appeal"
