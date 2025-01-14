@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Appeal, Detail, Materials, Materials3D, Equipment, AdditionalEexpenses, TimeCosts
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.html import format_html
 
@@ -33,12 +33,11 @@ class AppealAdmin(admin.ModelAdmin):
 
 @admin.register(Detail)
 class DetailAdmin(admin.ModelAdmin):
-    list_display = ('EAM', 'name', 'image_tag', 'model_link', 'plan_link')
+    list_display = ('EAM', 'image_tag', 'model_link', 'plan_link')
     list_filter = ('EAM', 'name')
 
     def image_tag(self, obj):
-        print(Detail.objects.raw("SELECT id FROM appeal"))
-        return format_html('<img src="{}" style="max-width:100px; max-height:100px"/>'.format(obj.photo.url))
+            return format_html('<img src="{}" style="max-width:100px; max-height:100px"/>'.format(obj.photo.url))
     image_tag.short_description = 'Фото/Рендер'
     image_tag.allow_tags = True
 
@@ -138,9 +137,10 @@ class TimeCostsAdmin(admin.ModelAdmin):
 @receiver(post_save, sender=Detail)
 def generate_data(sender, instance, created, **kwargs):
     if created:
+        print('aaaa')
         if not instance.photo:
-            instance.photo='/zaglushka.jpg'
-
+            instance.photo='/no_photo.png'
+        instance.save()
 
 @receiver(post_save, sender=AdditionalEexpenses)
 def delete_equip(sender, instance, created, **kwargs):
