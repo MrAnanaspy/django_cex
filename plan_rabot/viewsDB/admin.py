@@ -7,15 +7,8 @@ from django.utils.html import format_html
 
 @admin.register(Appeal)
 class AppealAdmin(admin.ModelAdmin):
-    list_display = ('id', 'EAM', 'name', 'image_tag', 'zayavka_link')
+    list_display = ('EAM', 'quantity', 'start_time', 'image_tag', 'zayavka_link')
     list_filter = ('start_time', 'production_status', 'machine')
-
-    def name(self, obj):
-        if Detail.objects.filter(EAM=obj.EAM).exists():
-            result = Detail.objects.get(EAM=obj.EAM).name
-        else:
-            result = '-'
-        return result
 
     def image_tag(self, obj):
             return format_html('<img src="{}" style="max-width:100px; max-height:100px"/>'.format(obj.EAM.photo.url))

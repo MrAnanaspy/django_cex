@@ -32,10 +32,8 @@ class Detail(models.Model):
            (max_length=20, primary_key=True))
     name = (models.CharField
             (max_length=100, verbose_name='Название', null=True, blank=True))
-    material = (models.CharField
-                (max_length=30, verbose_name='Материал', null=True, blank=True))
-    size = (models.IntegerField
-            (null=True, blank=True, verbose_name='Размер заготовки в мм'))
+    size = (models.CharField
+            (max_length=100, null=True, blank=True, verbose_name='Размер заготовки в мм'))
     AWP = (models.IntegerField
            (verbose_name="Средневзвешенная цена", null=True, blank=True))
     photo = (models.ImageField
@@ -180,31 +178,26 @@ class Appeal(models.Model):
     )
 
     EAM = models.ForeignKey(Detail, on_delete=models.CASCADE, verbose_name='Деталь')
-    quantity = (models.IntegerField(verbose_name='Количество'))
-    responsible_client = (models.CharField
-                          (max_length=30, verbose_name='Ответственный заказчик и контактная информация'))
-    branch = (models.CharField(max_length=30, choices=BRANCH, default='accept', verbose_name='Филиал'))
+    quantity = models.IntegerField(verbose_name='Количество')
+    responsible_client = models.CharField(max_length=30, verbose_name='Ответственный заказчик и контактная информация')
+    branch = models.CharField(max_length=30, choices=BRANCH, default='accept', verbose_name='Филиал')
     material = models.ForeignKey(Materials, on_delete=models.CASCADE, max_length=100, verbose_name='Материал', null=True, blank=True)
     product_contact = (models.BooleanField(verbose_name='Контакт с продуктом'))
+    size = (models.CharField(max_length=100, verbose_name='Размер в мм', null=True, blank=True))
     startAppeal_time = (models.DateField(verbose_name='Время подачи заявки', null=True, blank=True))
     start_time = (models.DateField(verbose_name='Время начала изготовления', null=True, blank=True))
     end_time = (models.DateField(verbose_name='Время окончания изготовления', null=True, blank=True))
     link = (models.CharField(max_length=150, verbose_name='Ссылка на заявку', null=True, blank=True, default='/'))
     machine = (MultiSelectField(max_length=110, choices=MACHINE, verbose_name='Станок', null=True, blank=True))
     quantity_defect = (models.IntegerField(verbose_name='Брак', null=True, blank=True, default=0))
-    ready_status = (MultiSelectField
-                    (max_length=50, choices=READY_STATUS, default='accept', verbose_name='Ожидаем', null=True, blank=True))
-    production_status = (models.CharField
-                         (max_length=100, choices=RODUCTION_STATUS, verbose_name='Статус выполнения', null=True,
-                          blank=True))
-    material_price = (models.IntegerField
-                      (verbose_name='Прямые затраты на сырье, Руб', null=True, blank=True))
-    equipment_price = (models.IntegerField
-                      (verbose_name='Прямые затраты на инструмент', null=True, blank=True))
+    ready_status = MultiSelectField(max_length=50, choices=READY_STATUS, default='accept', verbose_name='Ожидаем', null=True, blank=True)
+    production_status = (models.CharField(max_length=100, choices=RODUCTION_STATUS, verbose_name='Статус выполнения', null=True, blank=True))
+    material_price = (models.IntegerField(verbose_name='Прямые затраты на сырье, Руб', null=True, blank=True))
+    equipment_price = (models.IntegerField(verbose_name='Прямые затраты на инструмент', null=True, blank=True))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.EAM}"
+        return f"{self.EAM}, {self.quantity} шт. {self.start_time}"
 
     class Meta:
         db_table = "Appeal"
