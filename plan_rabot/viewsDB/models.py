@@ -32,10 +32,6 @@ class Detail(models.Model):
            (max_length=20, primary_key=True))
     name = (models.CharField
             (max_length=100, verbose_name='Название', null=True, blank=True))
-    size = (models.CharField
-            (max_length=100, null=True, blank=True, verbose_name='Размер заготовки в мм'))
-    AWP = (models.IntegerField
-           (verbose_name="Средневзвешенная цена", null=True, blank=True))
     photo = (models.ImageField
              (max_length=260, verbose_name='Ссылка на фото', upload_to=image_directory_path, null=True, blank=True))
     model = (models.FileField
@@ -182,8 +178,8 @@ class Appeal(models.Model):
     responsible_client = models.CharField(max_length=30, verbose_name='Ответственный заказчик и контактная информация')
     branch = models.CharField(max_length=30, choices=BRANCH, default='accept', verbose_name='Филиал')
     material = models.ForeignKey(Materials, on_delete=models.CASCADE, max_length=100, verbose_name='Материал', null=True, blank=True)
+    size = (models.CharField(max_length=100, verbose_name='Размер загатовки в мм', null=True, blank=True))
     product_contact = (models.BooleanField(verbose_name='Контакт с продуктом'))
-    size = (models.CharField(max_length=100, verbose_name='Размер в мм', null=True, blank=True))
     startAppeal_time = (models.DateField(verbose_name='Время подачи заявки', null=True, blank=True))
     start_time = (models.DateField(verbose_name='Время начала изготовления', null=True, blank=True))
     end_time = (models.DateField(verbose_name='Время окончания изготовления', null=True, blank=True))
@@ -192,6 +188,7 @@ class Appeal(models.Model):
     quantity_defect = (models.IntegerField(verbose_name='Брак', null=True, blank=True, default=0))
     ready_status = MultiSelectField(max_length=50, choices=READY_STATUS, default='accept', verbose_name='Ожидаем', null=True, blank=True)
     production_status = (models.CharField(max_length=100, choices=RODUCTION_STATUS, verbose_name='Статус выполнения', null=True, blank=True))
+    AWP = (models.IntegerField(verbose_name="Средневзвешенная цена", null=True, blank=True))
     material_price = (models.IntegerField(verbose_name='Прямые затраты на сырье, Руб', null=True, blank=True))
     equipment_price = (models.IntegerField(verbose_name='Прямые затраты на инструмент', null=True, blank=True))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)

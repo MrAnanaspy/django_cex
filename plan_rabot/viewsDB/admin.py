@@ -26,7 +26,7 @@ class AppealAdmin(admin.ModelAdmin):
 
 @admin.register(Detail)
 class DetailAdmin(admin.ModelAdmin):
-    list_display = ('EAM', 'image_tag', 'model_link', 'plan_link')
+    list_display = ('EAM', 'name', 'image_tag', 'model_link', 'plan_link')
     list_filter = ('EAM', 'name')
 
     def image_tag(self, obj):
