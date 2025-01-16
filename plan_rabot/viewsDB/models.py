@@ -203,19 +203,16 @@ class Appeal(models.Model):
 
 class TimeCosts(models.Model):
     appeal_id = models.OneToOneField(Appeal, on_delete = models.CASCADE, primary_key = True)
-    twt = models.FloatField(max_length=30, verbose_name='Время работы токарного станка на 1 шт (мин)', null=True, blank=True)
-    twd = models.FloatField(max_length=30, verbose_name='Время простоя токарного станка на 1 шт (мин)', null=True, blank=True)
-    mwt = models.FloatField(max_length=30, verbose_name='Время работы фрезерного станка на 1 шт (мин)', null=True, blank=True)
-    mwd = models.FloatField(max_length=30, verbose_name='Время простоя фрезерного станка на 1 шт (мин)', null=True,
-                            blank=True)
-    tmwt = models.FloatField(max_length=30, verbose_name='Время работы токарного-фрезерного станка на 1 шт (мин)', null=True,
-                             blank=True)
-    tmwd = models.FloatField(max_length=30, verbose_name='Время простоя токарно-фезерного станка на 1 шт (мин)', null=True,
-                             blank=True)
+    twt = models.FloatField(max_length=30, verbose_name='Время работы токарного станка на 1 шт (мин)', default=0)
+    twd = models.FloatField(max_length=30, verbose_name='Время простоя токарного станка на 1 шт (мин)', default=0)
+    mwt = models.FloatField(max_length=30, verbose_name='Время работы фрезерного станка на 1 шт (мин)', default=0)
+    mwd = models.FloatField(max_length=30, verbose_name='Время простоя фрезерного станка на 1 шт (мин)',default=0)
+    tmwt = models.FloatField(max_length=30, verbose_name='Время работы токарного-фрезерного станка на 1 шт (мин)', default=0)
+    tmwd = models.FloatField(max_length=30, verbose_name='Время простоя токарно-фезерного станка на 1 шт (мин)', default=0)
     procurement_work = models.FloatField(max_length=30,
                                          verbose_name='Время потраченое на заготовительные операции (Пила, плазма, электроэррозия) 1 шт (мин)',
-                                         null=True, blank=True)
-    comment = models.TextField(verbose_name='Комментарий')
+                                         default=0)
+    comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
     class Meta:
         db_table = "TimeCosts"

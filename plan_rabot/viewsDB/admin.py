@@ -145,3 +145,9 @@ def delete_equip(sender, instance, created, **kwargs):
 def add_material(sender, instance, created, **kwargs):
     if created:
         pass
+
+
+@receiver(post_save, sender=Appeal)
+def add_appeal(sender, instance, created, **kwargs):
+    if created:
+        TimeCosts.objects.create(appeal_id_id = instance.id)
