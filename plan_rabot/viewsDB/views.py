@@ -81,9 +81,14 @@ def generate_production_plan():
         sheet.cell(row=count, column=11, value=cost_price)
 
         # start_time
-        sheet.cell(row=count, column=12, value=appeal.start_time)
-
+        if appeal.start_time.exists():
+            sheet.cell(row=count, column=12, value=appeal.start_time)
+        else:
+            sheet.cell(row=count, column=12, value=datetime.date.today())
         # end_time
-        sheet.cell(row=count, column=13, value=appeal.end_time)
+        if appeal.end_time.exists():
+            sheet.cell(row=count, column=13, value=appeal.end_time)
+        else:
+            sheet.cell(row=count, column=13, value=datetime.date.today())
     wb.save("viewsDB/templates/documents/exel/stata_done.xlsx")
 
