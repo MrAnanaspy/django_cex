@@ -77,7 +77,7 @@ def generate_production_plan():
             sheet.cell(row=count, column=10, value=0)
 
         # Себестоимость
-        cost_price = round((pers_cost + sheet.cell(row=count, column=10).value) / appeal.quantity + appeal.material_price, 3)
+        cost_price = round((pers_cost + electricity) / appeal.quantity + appeal.material_price, 3)
         sheet.cell(row=count, column=11, value=cost_price)
 
         # start_time
