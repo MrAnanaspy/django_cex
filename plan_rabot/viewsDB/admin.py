@@ -20,6 +20,7 @@ class AppealAdmin(admin.ModelAdmin):
             return format_html('<a href="{}">Ссылка на заявку</a>'.format(obj.link))
         else:
             return "Нет ссылки"
+
     zayavka_link.allow_tags = True
     zayavka_link.short_description = 'Ссылка'
 
@@ -58,6 +59,8 @@ class DetailAdmin(admin.ModelAdmin):
 class MaterialAdmin(admin.ModelAdmin):
     list_display = ('name', 'shape', 'width', 'long', 'height', 'certificate', 'melting', 'party')
     list_filter = ('name', 'shape')
+
+
 
 
 @admin.register(Materials3D)
@@ -130,16 +133,17 @@ class TimeCostsAdmin(admin.ModelAdmin):
 @receiver(post_save, sender=Detail)
 def generate_data(sender, instance, created, **kwargs):
     if created:
-        print('aaaa')
         if not instance.photo:
             instance.photo='/no_photo.png'
         instance.save()
+
 
 @receiver(post_save, sender=AdditionalEexpenses)
 def delete_equip(sender, instance, created, **kwargs):
     if created:
         num = Equipment.objects.get(designation=instance.designation).quantity
         Equipment.objects.filter(designation=instance.designation).update(quantity=(num - 1))
+
 
 @receiver(post_save, sender=Materials)
 def add_material(sender, instance, created, **kwargs):

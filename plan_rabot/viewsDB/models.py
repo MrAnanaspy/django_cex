@@ -158,7 +158,6 @@ class Appeal(models.Model):
         ('done', 'Готово')
     )
     READY_STATUS = (
-        ('material', 'Ожидание поставки материала'),
         ('equipment', 'Ожидание поставки оснастки'),
         ('document', 'Ожидание документации')
     )
@@ -193,7 +192,7 @@ class Appeal(models.Model):
     machine = (MultiSelectField(max_length=110, choices=MACHINE, verbose_name='Станок', null=True, blank=True))
     quantity_defect = (models.IntegerField(verbose_name='Брак', null=True, blank=True, default=0))
     ready_status = MultiSelectField(max_length=50, choices=READY_STATUS, default='accept', verbose_name='Ожидаем', null=True, blank=True)
-    production_status = (models.CharField(max_length=100, choices=RODUCTION_STATUS, verbose_name='Статус выполнения', null=True, blank=True))
+    production_status = (models.TextField(verbose_name='Статус выполнения', default='Отсутствует: Материал, Оснастка, Чертеж, УП'))
     AWP = (models.IntegerField(verbose_name="Средневзвешенная цена", default=0))
     material_price = (models.IntegerField(verbose_name='Прямые затраты на сырье, Руб', default=0))
     equipment_price = (models.IntegerField(verbose_name='Прямые затраты на инструмент', default=0))

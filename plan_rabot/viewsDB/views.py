@@ -65,7 +65,17 @@ def generate_production_plan():
         sheet.cell(row=count, column=6).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         # косвенные затраты
-        sheet.cell(row=count, column=7, value=0)
+        time_a = 0
+        production_time = 0
+        amort_prise = appeal.equipment_price
+        if TimeCosts.objects.filter(appeal_id=appeal.id).exists():
+            time_cost = TimeCosts.objects.get(appeal_id_id=appeal.id)
+            time_a = time_cost.twt + time_cost.mwt + time_cost.tmwt
+            for ap in Appeal.objects.filter(start_time__year=2025):
+                t_c = TimeCosts.objects.get(appeal_id=ap.id)
+                production_time += t_c.twt + t_c.mwt + t_c.tmwt
+        eq = time_a * appeal.quantity / production_time * amort_prise
+        sheet.cell(row=count, column=7, value=eq)
         sheet.cell(row=count, column=7).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         #  затраты на персонал
