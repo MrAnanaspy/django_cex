@@ -64,6 +64,11 @@ class Materials(models.Model):
         ('pipe ', 'труба'),
         ('corner ', 'уголок')
     )
+    STATUS = (
+        ('not', 'Не заказан'),
+        ('way', 'В пути'),
+        ('in_stock', 'В наличии'),
+    )
     #Переделать на отдельную БД
     name = (models.CharField
             (max_length=100, verbose_name='Наименование', null=True, blank=True))
@@ -77,6 +82,8 @@ class Materials(models.Model):
             (verbose_name='Длинна в мм', null=True, blank=True))
     height = (models.IntegerField
               (verbose_name='Толщина в мм', null=True, blank=True))
+    status = (models.CharField
+             (max_length=30, choices=STATUS, verbose_name='Статус материала', default='not'))
     certificate = (models.CharField
                    (max_length=50, verbose_name='№ сертификата', null=True, blank=True))
     melting = (models.CharField
@@ -178,7 +185,6 @@ class Appeal(models.Model):
     responsible_client = models.CharField(max_length=30, verbose_name='Ответственный заказчик и контактная информация')
     branch = models.CharField(max_length=30, choices=BRANCH, default='accept', verbose_name='Филиал')
     material = models.ForeignKey(Materials, on_delete=models.CASCADE, max_length=100, verbose_name='Материал', null=True, blank=True)
-    size = (models.CharField(max_length=100, verbose_name='Размер загатовки в мм', null=True, blank=True))
     product_contact = (models.BooleanField(verbose_name='Контакт с продуктом'))
     startAppeal_time = (models.DateField(verbose_name='Время подачи заявки', null=True, blank=True))
     start_time = (models.DateField(verbose_name='Время начала изготовления', null=True, blank=True))
