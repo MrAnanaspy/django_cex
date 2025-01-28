@@ -45,6 +45,7 @@ class Detail(models.Model):
     solid_cam_project = (models.FileField
                          (max_length=260, verbose_name='Ссылка на SolidCam проэкт', upload_to=solid_cam_project_directory_path,
                              null=True, blank=True))
+    AWP = (models.IntegerField(verbose_name="Средневзвешенная цена", default=0))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
     def __str__(self):
@@ -193,7 +194,6 @@ class Appeal(models.Model):
     quantity_defect = (models.IntegerField(verbose_name='Брак', null=True, blank=True, default=0))
     ready_status = MultiSelectField(max_length=50, choices=READY_STATUS, default='accept', verbose_name='Ожидаем', null=True, blank=True)
     production_status = (models.TextField(verbose_name='Статус выполнения', default='Отсутствует: Материал, Оснастка, Чертеж, УП'))
-    AWP = (models.IntegerField(verbose_name="Средневзвешенная цена", default=0))
     material_price = (models.IntegerField(verbose_name='Прямые затраты на сырье, Руб', default=0))
     equipment_price = (models.IntegerField(verbose_name='Прямые затраты на инструмент', default=0))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
