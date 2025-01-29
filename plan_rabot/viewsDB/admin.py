@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Appeal, Detail, Materials, Materials3D, Equipment, AdditionalEexpenses, TimeCosts
+from .models import Appeal, Detail, Materials, Materials3D, Equipment, AdditionalEexpenses, TimeCosts, Expenses
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.html import format_html
@@ -61,6 +61,10 @@ class MaterialAdmin(admin.ModelAdmin):
     list_filter = ('name', 'shape')
 
 
+@admin.register(Expenses)
+class MaterialAdmin(admin.ModelAdmin):
+    list_display = ('time', 'fot', 'tool', 'depreciation', 'electricity', 'operator')
+    list_filter = ('time',)
 
 
 @admin.register(Materials3D)
