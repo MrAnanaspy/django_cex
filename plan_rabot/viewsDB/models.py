@@ -1,5 +1,10 @@
 from django.db import models
 from multiselectfield import MultiSelectField
+import configparser
+
+
+config = configparser.ConfigParser()  # создаём объекта парсера
+config.read("config.ini")
 
 def image_directory_path(instance, filename):
     return '{0}/img/{1}'.format(instance.EAM, filename)
@@ -226,9 +231,9 @@ class Expenses(models.Model):
     time = models.DateField(verbose_name='Месяц')
     fot = models.FloatField(max_length=30, verbose_name='ФОТ', default=0)
     tool = models.FloatField(max_length=30, verbose_name='Затраты на инструмент', default=0)
-    depreciation = models.FloatField(max_length=30, verbose_name='Амортизация', default=837.83)
-    electricity = models.FloatField(max_length=30, verbose_name='Затраты на электроэнергию', default=15000.0)
-    operator = models.FloatField(max_length=30, verbose_name='Затраты на оператора в час', default=230000.0)
+    operator = models.FloatField(max_length=30, verbose_name='Затраты на оператора в час', default=config.get("ExpensesConf", "OPERATOR"))
+    electricity = models.FloatField(max_length=30, verbose_name='Затраты на электроэнергию', default=config.get("ExpensesConf", "ELECTRICITY"))
+    depreciation = models.FloatField(max_length=30, verbose_name='Амортизация', default=config.get("ExpensesConf", "DEPRECIATION"))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
     def __str__(self):

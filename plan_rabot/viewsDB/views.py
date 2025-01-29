@@ -1,11 +1,8 @@
-import os
-from django.conf import settings
-from django.http import HttpResponse, Http404
 import openpyxl
 from django.shortcuts import render
 from openpyxl.styles import PatternFill
 
-from .models import Appeal, TimeCosts
+from .models import Appeal, TimeCosts, Expenses
 import datetime
 
 
@@ -79,7 +76,7 @@ def generate_production_plan():
         sheet.cell(row=count, column=7).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         #  затраты на персонал
-        pers_cost = round(time * 837.83, 3)
+        pers_cost = round(production_time * 837.83, 3)
         sheet.cell(row=count, column=8, value=pers_cost)
         sheet.cell(row=count, column=8).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
@@ -98,9 +95,10 @@ def generate_production_plan():
         sheet.cell(row=count, column=9).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         #  затраты на электроэнергию
-        if TimeCosts.objects.filter(appeal_id=appeal.id).exists():
+        if TimeCosts.objects.filter(appeal_id=appeal.id).exists() & Expenses.objects.filter(time__year=2025).exists():
             time_cost = TimeCosts.objects.get(appeal_id_id=appeal.id)
-            electricity = (time_cost.twt * 30 * + time_cost.mwt * 24 + time_cost.tmwt * 30) * 1.9
+            cof = 15000 / production_time
+            electricity = (time_cost.twt * cof + time_cost.mwt * cof + time_cost.tmwt * cof)
             sheet.cell(row=count, column=10, value=electricity)
         else:
             sheet.cell(row=count, column=10, value=0)
