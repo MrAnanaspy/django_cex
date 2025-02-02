@@ -32,7 +32,7 @@ def generate_production_plan():
         color = 'FFFFFF'
         if appeal.ready_status and appeal.material and appeal.material.status != 'in_stock':
             color = 'FFFF00'
-        elif datetime.date.today() < appeal.end_time:
+        elif appeal.end_time and datetime.date.today() < appeal.end_time:
             color = '00B0F0'
         else:
             color = '00D050'
@@ -122,7 +122,7 @@ def generate_production_plan():
         sheet.cell(row=count, column=12).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         # end_time
-        if appeal.end_time is not None:
+        if appeal.end_time:
             sheet.cell(row=count, column=13, value=appeal.end_time)
         else:
             sheet.cell(row=count, column=13, value=datetime.date.today())
