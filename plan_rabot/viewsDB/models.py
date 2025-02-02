@@ -6,28 +6,43 @@ import configparser
 config = configparser.ConfigParser()  # создаём объекта парсера
 config.read("config.ini")
 
+#Сохранение данных деталей
 def image_directory_path(instance, filename):
     return '{0}/img/{1}'.format(instance.EAM, filename)
-
 
 def model_directory_path(instance, filename):
     return '{0}/model/{1}'.format(instance.EAM, filename)
 
-
 def plan_directory_path(instance, filename):
     return '{0}/plan/{1}'.format(instance.EAM, filename)
-
 
 def route_map_directory_path(instance, filename):
     return '{0}/route_map/{1}'.format(instance.EAM, filename)
 
-
 def testing_act_directory_path(instance, filename):
     return '{0}/testing_act/{1}'.format(instance.EAM, filename)
 
-
 def solid_cam_project_directory_path(instance, filename):
     return '{0}/solid_cam_project/{1}'.format(instance.EAM, filename)
+
+#Сохранение данных элементов сборки
+def image_directory_path_assembling(instance, filename):
+    return 'assembling/{0}/img/{1}'.format(instance.EAM, filename)
+
+def model_directory_path_assembling(instance, filename):
+    return 'assembling/{0}/model/{1}'.format(instance.EAM, filename)
+
+def plan_directory_path_assembling(instance, filename):
+    return 'assembling/{0}/plan/{1}'.format(instance.EAM, filename)
+
+def route_map_directory_path_assembling(instance, filename):
+    return 'assembling/{0}/route_map/{1}'.format(instance.EAM, filename)
+
+def testing_act_directory_path_assembling(instance, filename):
+    return 'assembling/{0}/testing_act/{1}'.format(instance.EAM, filename)
+
+def solid_cam_project_directory_path_assembling(instance, filename):
+    return 'assembling/{0}/solid_cam_project/{1}'.format(instance.EAM, filename)
 
 
 class Detail(models.Model):
@@ -57,6 +72,32 @@ class Detail(models.Model):
     class Meta:
         db_table = "Detail"
         verbose_name_plural = 'Детали'
+
+
+class Assembling(models.Model):
+    EAM = models.ForeignKey(Detail, on_delete=models.CASCADE, verbose_name='Деталь')
+    name = (models.CharField
+            (max_length=100, verbose_name='Название', null=True, blank=True))
+    model = (models.FileField
+             (max_length=260, verbose_name='Ссылка на модель', upload_to=model_directory_path_assembling, null=True, blank=True))
+    plan = (models.FileField
+            (max_length=260, verbose_name='Ссылка на чертеж', upload_to=plan_directory_path_assembling, null=True, blank=True))
+    route_map = (models.FileField
+                 (max_length=260, verbose_name='Ссылка на маршрутный лист', upload_to=route_map_directory_path_assembling, null=True, blank=True))
+    testing_act = (models.FileField
+                   (max_length=260, verbose_name='Ссылка на акт тестирования', upload_to=testing_act_directory_path_assembling, null=True, blank=True))
+    solid_cam_project = (models.FileField
+                         (max_length=260, verbose_name='Ссылка на SolidCam проэкт', upload_to=solid_cam_project_directory_path_assembling,
+                             null=True, blank=True))
+    AWP = (models.IntegerField(verbose_name="Средневзвешенная цена", default=0))
+    comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.EAM} - {self.name}"
+
+    class Meta:
+        db_table = "Assembling"
+        verbose_name_plural = 'Элементы сборки'
 
 
 class Materials(models.Model):
@@ -241,3 +282,6 @@ class Expenses(models.Model):
     class Meta:
         db_table = "Expenses"
         verbose_name_plural = 'Расходы'
+
+
+

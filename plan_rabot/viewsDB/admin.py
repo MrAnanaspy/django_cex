@@ -1,9 +1,13 @@
 from django.contrib import admin
-from .models import Appeal, Detail, Materials, Materials3D, Equipment, AdditionalEexpenses, TimeCosts, Expenses
+from .models import Appeal, Detail, Materials, Materials3D, Equipment, AdditionalEexpenses, TimeCosts, Expenses, \
+    Assembling
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.html import format_html
 
+
+class DetailInline(admin.TabularInline):
+    model = Assembling
 
 @admin.register(Appeal)
 class AppealAdmin(admin.ModelAdmin):
@@ -30,6 +34,7 @@ class DetailAdmin(admin.ModelAdmin):
     list_display = ('EAM', 'name', 'image_tag', 'model_link', 'plan_link')
     list_filter = ('EAM', 'name')
     search_fields = ('EAM', 'name')
+    inlines = [DetailInline]
 
     def image_tag(self, obj):
             return format_html('<img src="{}" style="max-width:100px; max-height:100px"/>'.format(obj.photo.url))
@@ -74,7 +79,8 @@ class Material3dAdmin(admin.ModelAdmin):
     list_filter = ('name', 'printing_technology')
 
 
-@admin.register(AdditionalEexpenses)
+#AdditionalEexpenses
+'''@admin.register(AdditionalEexpenses)
 class AdditionalEexpenseAdmin(admin.ModelAdmin):
     list_display = ('designation', 'name_equip', 'name_detail', 'img_detail')
 
@@ -107,12 +113,13 @@ class AdditionalEexpenseAdmin(admin.ModelAdmin):
 
     img_detail.allow_tags = True
     img_detail.short_description = 'Фото/Рендер детали'
+'''
 
-
-@admin.register(Equipment)
+#Equipment
+'''@admin.register(Equipment)
 class EquipmentAdmin(admin.ModelAdmin):
     list_display = ('name', 'designation', 'type', 'quantity')
-    list_filter = ('name', 'type')
+    list_filter = ('name', 'type')'''
 
 
 @admin.register(TimeCosts)
