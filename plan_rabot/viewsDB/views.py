@@ -1,5 +1,6 @@
 import openpyxl
 from django.shortcuts import render
+from django.utils.functional import empty
 from openpyxl.styles import PatternFill
 import configparser
 from .models import Appeal, TimeCosts, Expenses
@@ -26,13 +27,14 @@ def generate_production_plan():
     count = 1
     # Read and print the data
     for appeal in Appeal.objects.all():
-        count += 1
+
+        #color
         color = 'FFFFFF'
-        if appeal.production_status == 'accept':
+        if appeal.ready_status and appeal.material and appeal.material.status != 'in_stock':
             color = 'FFFF00'
-        elif appeal.production_status == 'in_work':
+        elif datetime.date.today() < appeal.end_time:
             color = '00B0F0'
-        elif appeal.production_status == 'done':
+        else:
             color = '00D050'
 
         #objects
@@ -46,6 +48,7 @@ def generate_production_plan():
         time = time_cost.twt + time_cost.twd + time_cost.mwt + time_cost.mwd + time_cost.tmwt + time_cost.tmwd + time_cost.procurement_work
         time_a = time_cost.twt + time_cost.mwt + time_cost.tmwt
         time_b = time_cost.twt + time_cost.mwt + time_cost.tmwt + time_cost.twd + time_cost.mwd + time_cost.tmwd
+        count += 1
 
         # add id
         sheet.cell(row=count, column=1, value=appeal.id)
