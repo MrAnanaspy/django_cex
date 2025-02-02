@@ -76,20 +76,22 @@ def generate_production_plan():
 
         # косвенные затраты
         production_time = 0
+        production_time_a = 0
         eq = 0
-        amort_prise = expenses.tool
+        tool_prise = expenses.tool
         if time_a != 0:
             for ap in Appeal.objects.filter(start_time__year=2025):
                 t_c = TimeCosts.objects.get(appeal_id=ap.id)
                 production_time += (t_c.twt + t_c.mwt + t_c.tmwt) * ap.quantity
-            eq = round(time_a * appeal.quantity / production_time * amort_prise, 3)
+                production_time_a += (t_c.twt + t_c.mwt + t_c.tmwt + t_c.twd + t_c.mwd + t_c.tmwd + t_c.procurement_work) * ap.quantity
+            eq = round(time_a * appeal.quantity / production_time * tool_prise, 3)
         sheet.cell(row=count, column=7, value=eq)
         sheet.cell(row=count, column=7).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         #  затраты на персонал
         pers_cost = 0.0
         if time_a !=0 and expenses.fot is not None:
-            pers_cost = round(expenses.fot * (time_a * appeal.quantity / production_time), 3)
+            pers_cost = round(expenses.fot * (time_b * appeal.quantity / production_time_a), 3)
         sheet.cell(row=count, column=8, value=pers_cost)
         sheet.cell(row=count, column=8).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
