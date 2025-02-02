@@ -29,6 +29,7 @@ class AppealAdmin(admin.ModelAdmin):
 class DetailAdmin(admin.ModelAdmin):
     list_display = ('EAM', 'name', 'image_tag', 'model_link', 'plan_link')
     list_filter = ('EAM', 'name')
+    search_fields = ('EAM', 'name')
 
     def image_tag(self, obj):
             return format_html('<img src="{}" style="max-width:100px; max-height:100px"/>'.format(obj.photo.url))
