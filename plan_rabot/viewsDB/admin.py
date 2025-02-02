@@ -62,8 +62,8 @@ class MaterialAdmin(admin.ModelAdmin):
 
 
 @admin.register(Expenses)
-class MaterialAdmin(admin.ModelAdmin):
-    list_display = ('time', 'fot', 'tool', 'depreciation', 'electricity', 'operator')
+class ExpensesAdmin(admin.ModelAdmin):
+    list_display = ('time', 'fot', 'tool', 'depreciation', 'electricity')
     list_filter = ('time',)
 
 

@@ -197,7 +197,7 @@ class Appeal(models.Model):
     quantity_defect = (models.IntegerField(verbose_name='Брак', null=True, blank=True, default=0))
     ready_status = MultiSelectField(max_length=50, choices=READY_STATUS, default='accept', verbose_name='Ожидаем', null=True, blank=True)
     production_status = (models.TextField(verbose_name='Статус выполнения', default='Отсутствует: Материал, Оснастка, Чертеж, УП'))
-    material_price = (models.IntegerField(verbose_name='Прямые затраты на сырье, Руб', default=0))
+    material_price = (models.IntegerField(verbose_name='Прямые затраты сырья на партию, Руб', default=0))
     equipment_price = (models.IntegerField(verbose_name='Прямые затраты на инструмент', default=0))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
@@ -231,7 +231,6 @@ class Expenses(models.Model):
     time = models.DateField(verbose_name='Месяц')
     fot = models.FloatField(max_length=30, verbose_name='ФОТ', default=0)
     tool = models.FloatField(max_length=30, verbose_name='Затраты на инструмент', default=0)
-    operator = models.FloatField(max_length=30, verbose_name='Затраты на оператора в час', default=config.get("ExpensesConf", "OPERATOR"))
     electricity = models.FloatField(max_length=30, verbose_name='Затраты на электроэнергию', default=config.get("ExpensesConf", "ELECTRICITY"))
     depreciation = models.FloatField(max_length=30, verbose_name='Амортизация', default=config.get("ExpensesConf", "DEPRECIATION"))
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
