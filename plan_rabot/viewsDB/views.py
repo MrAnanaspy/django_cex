@@ -1,7 +1,7 @@
 import openpyxl
 from django.shortcuts import render
 from openpyxl.styles import PatternFill
-
+import configparser
 from .models import Appeal, TimeCosts, Expenses
 import datetime
 
@@ -14,6 +14,9 @@ def get_data(request):
 
 
 def generate_production_plan():
+    config = configparser.ConfigParser()  # создаём объекта парсера
+    config.read("config.ini")
+
     # Load the workbook
     wb = openpyxl.load_workbook("media/documents/exel/stata_done.xlsx")
 
@@ -76,28 +79,27 @@ def generate_production_plan():
         sheet.cell(row=count, column=7).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         #  затраты на персонал
-        pers_cost = round(production_time * 837.83, 3)
+        pers_cost = round(production_time * config.get("ExpensesConf", "OPERATOR"), 3)
         sheet.cell(row=count, column=8, value=pers_cost)
         sheet.cell(row=count, column=8).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         #  затраты на амортизацию
         time_a = 0
         production_time = 0
-        amort_prise = 230000
         if TimeCosts.objects.filter(appeal_id=appeal.id).exists():
             time_cost = TimeCosts.objects.get(appeal_id_id=appeal.id)
             time_a = time_cost.twt + time_cost.mwt + time_cost.tmwt
             for ap in Appeal.objects.filter(start_time__year=2025):
                 t_c = TimeCosts.objects.get(appeal_id=ap.id)
                 production_time += t_c.twt + t_c.mwt + t_c.tmwt
-        amort = time_a * appeal.quantity / production_time * amort_prise
+        amort = time_a * appeal.quantity / production_time * config.get("ExpensesConf", "DEPRECIATION")
         sheet.cell(row=count, column=9, value=amort)
         sheet.cell(row=count, column=9).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         #  затраты на электроэнергию
         if TimeCosts.objects.filter(appeal_id=appeal.id).exists() & Expenses.objects.filter(time__year=2025).exists():
             time_cost = TimeCosts.objects.get(appeal_id_id=appeal.id)
-            cof = 15000 / production_time
+            cof = config.get("ExpensesConf", "ELECTRICITY") / production_time
             electricity = (time_cost.twt * cof + time_cost.mwt * cof + time_cost.tmwt * cof)
             sheet.cell(row=count, column=10, value=electricity)
         else:
