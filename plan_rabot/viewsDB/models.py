@@ -50,6 +50,8 @@ class Detail(models.Model):
            (max_length=20, primary_key=True))
     name = (models.CharField
             (max_length=100, verbose_name='Название', null=True, blank=True))
+    material = (models.CharField
+            (max_length=100, verbose_name='Материал и размер заготовки', null=True, blank=True))
     photo = (models.ImageField
              (max_length=260, verbose_name='Ссылка на фото', upload_to=image_directory_path, null=True, blank=True))
     model = (models.FileField
@@ -78,6 +80,8 @@ class Assembling(models.Model):
     EAM = models.ForeignKey(Detail, on_delete=models.CASCADE, verbose_name='Деталь')
     name = (models.CharField
             (max_length=100, verbose_name='Название', null=True, blank=True))
+    material = (models.CharField
+                (max_length=100, verbose_name='Материал и размер заготовки', null=True, blank=True))
     model = (models.FileField
              (max_length=260, verbose_name='Ссылка на модель', upload_to=model_directory_path_assembling, null=True, blank=True))
     plan = (models.FileField
@@ -89,7 +93,7 @@ class Assembling(models.Model):
     solid_cam_project = (models.FileField
                          (max_length=260, verbose_name='Ссылка на SolidCam проэкт', upload_to=solid_cam_project_directory_path_assembling,
                              null=True, blank=True))
-    AWP = (models.IntegerField(verbose_name="Средневзвешенная цена", default=0))
+
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
     def __str__(self):
