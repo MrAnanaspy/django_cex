@@ -1,6 +1,5 @@
 import openpyxl
 from django.shortcuts import render
-from django.utils.functional import empty
 from openpyxl.styles import PatternFill
 import configparser
 from .models import Appeal, TimeCosts, Expenses
@@ -39,10 +38,11 @@ def generate_production_plan():
 
         #objects
         time_cost = TimeCosts.objects.get(appeal_id_id=appeal.id)
-        if Expenses.objects.filter(time__year=2025).exists():
-            expenses = Expenses.objects.get(time__year=2025)
+        if appeal.start_time and Expenses.objects.filter(time__year=appeal.start_time.year, time__month=appeal.start_time.month).exists():
+            expenses = Expenses.objects.get(time__year=appeal.start_time.year, time__month=appeal.start_time.month)
         else:
-            expenses = Expenses
+            expenses = Expenses()
+
 
         #const
         time = time_cost.twt + time_cost.twd + time_cost.mwt + time_cost.mwd + time_cost.tmwt + time_cost.tmwd + time_cost.procurement_work
@@ -79,8 +79,10 @@ def generate_production_plan():
         production_time_a = 0
         eq = 0
         tool_prise = expenses.tool
-        if time_a != 0:
-            for ap in Appeal.objects.filter(start_time__year=2025):
+        print(expenses.time)
+        if time_a != 0 and tool_prise != 0 and expenses.time and Appeal.objects.filter(start_time__year=expenses.time.year, start_time__month=expenses.time.month).exists():
+            for ap in Appeal.objects.filter(start_time__year=expenses.time.year, start_time__month=expenses.time.month):
+                print(ap)
                 t_c = TimeCosts.objects.get(appeal_id=ap.id)
                 production_time += (t_c.twt + t_c.mwt + t_c.tmwt) * ap.quantity
                 production_time_a += (t_c.twt + t_c.mwt + t_c.tmwt + t_c.twd + t_c.mwd + t_c.tmwd + t_c.procurement_work) * ap.quantity
@@ -90,14 +92,14 @@ def generate_production_plan():
 
         #  затраты на персонал
         pers_cost = 0.0
-        if time_a !=0 and expenses.fot is not None:
+        if time_a !=0 and expenses.fot and production_time_a !=0:
             pers_cost = round(expenses.fot * (time_b * appeal.quantity / production_time_a), 3)
         sheet.cell(row=count, column=8, value=pers_cost)
         sheet.cell(row=count, column=8).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
         #  затраты на амортизацию
         amort = 0.0
-        if time_a != 0:
+        if time_a != 0 and production_time != 0:
             amort = round((time_a * appeal.quantity / production_time) * expenses.depreciation, 3)
         sheet.cell(row=count, column=9, value=amort)
         sheet.cell(row=count, column=9).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
@@ -105,9 +107,10 @@ def generate_production_plan():
         #  затраты на электроэнергию
         electricity = 0
         if (TimeCosts.objects.filter(appeal_id=appeal.id).exists()
-                and Expenses.objects.filter(time__year=2025).exists()
-                and time != 0):
-            electricity = round(Expenses.objects.get(time__year=2025).electricity * (time_a * appeal.quantity / production_time), 3)
+                and expenses.electricity
+                and time != 0
+                and production_time != 0):
+            electricity = round(expenses.electricity * (time_a * appeal.quantity / production_time), 3)
         sheet.cell(row=count, column=10, value=electricity)
         sheet.cell(row=count, column=10).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 
