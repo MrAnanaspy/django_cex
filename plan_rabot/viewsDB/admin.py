@@ -13,6 +13,7 @@ class DetailInline(admin.TabularInline):
 class AppealAdmin(admin.ModelAdmin):
     list_display = ('EAM', 'quantity', 'start_time', 'image_tag', 'zayavka_link')
     list_filter = ('start_time', 'production_status', 'machine')
+    search_fields = ('EAM__name', 'EAM__EAM')
 
     def image_tag(self, obj):
             return format_html('<img src="{}" style="max-width:100px; max-height:100px"/>'.format(obj.EAM.photo.url))
