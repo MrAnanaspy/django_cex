@@ -18,7 +18,7 @@ def generate_production_plan():
     config.read("config.ini")
 
     # Load the workbook
-    wb = openpyxl.load_workbook("media/documents/exel/stata_done.xlsx")
+    wb = openpyxl.load_workbook("media/documents/exel/stata.xlsx")
 
     # Select the active sheet
     sheet = wb.active
@@ -84,7 +84,8 @@ def generate_production_plan():
                 t_c = TimeCosts.objects.get(appeal_id=ap.id)
                 production_time += (t_c.twt + t_c.mwt + t_c.tmwt) * ap.quantity
                 production_time_a += (t_c.twt + t_c.mwt + t_c.tmwt + t_c.twd + t_c.mwd + t_c.tmwd + t_c.procurement_work) * ap.quantity
-            eq = round(time_a * appeal.quantity / production_time * tool_prise, 3)
+            eq = round((time_a * appeal.quantity / production_time * tool_prise), 3)
+        eq += appeal.equipment_price
         sheet.cell(row=count, column=7, value=eq)
         sheet.cell(row=count, column=7).fill = PatternFill(start_color=color, end_color=color, fill_type="solid")
 

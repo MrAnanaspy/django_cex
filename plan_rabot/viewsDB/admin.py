@@ -167,4 +167,13 @@ def add_material(sender, instance, created, **kwargs):
 @receiver(post_save, sender=Appeal)
 def add_appeal(sender, instance, created, **kwargs):
     if created:
-        TimeCosts.objects.create(appeal_id_id = instance.id)
+        TimeCosts.objects.create(
+                                appeal_id_id = instance.id,
+                                 twt= instance.EAM.twt,
+                                 twd=instance.EAM.twd,
+                                 mwt=instance.EAM.mwt,
+                                 mwd=instance.EAM.mwd,
+                                 tmwt=instance.EAM.tmwt,
+                                 tmwd=instance.EAM.tmwd,
+                                 procurement_work=instance.EAM.procurement_work
+                                 )
