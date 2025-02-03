@@ -66,6 +66,17 @@ class Detail(models.Model):
                          (max_length=260, verbose_name='Ссылка на SolidCam проэкт', upload_to=solid_cam_project_directory_path,
                              null=True, blank=True))
     AWP = (models.IntegerField(verbose_name="Средневзвешенная цена", default=0))
+    twt = models.FloatField(max_length=30, verbose_name='Время работы токарного станка на 1 шт (мин)', default=0)
+    twd = models.FloatField(max_length=30, verbose_name='Время простоя токарного станка на 1 шт (мин)', default=0)
+    mwt = models.FloatField(max_length=30, verbose_name='Время работы фрезерного станка на 1 шт (мин)', default=0)
+    mwd = models.FloatField(max_length=30, verbose_name='Время простоя фрезерного станка на 1 шт (мин)', default=0)
+    tmwt = models.FloatField(max_length=30, verbose_name='Время работы токарного-фрезерного станка на 1 шт (мин)',
+                             default=0)
+    tmwd = models.FloatField(max_length=30, verbose_name='Время простоя токарно-фезерного станка на 1 шт (мин)',
+                             default=0)
+    procurement_work = models.FloatField(max_length=30,
+                                         verbose_name='Время потраченое на заготовительные операции (Пила, плазма, электроэррозия) 1 шт (мин)',
+                                         default=0)
     comment = models.TextField(verbose_name='Комментарий', null=True, blank=True)
 
     def __str__(self):
