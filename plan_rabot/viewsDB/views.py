@@ -79,10 +79,8 @@ def generate_production_plan():
         production_time_a = 0
         eq = 0
         tool_prise = expenses.tool
-        print(expenses.time)
         if time_a != 0 and tool_prise != 0 and expenses.time and Appeal.objects.filter(start_time__year=expenses.time.year, start_time__month=expenses.time.month).exists():
             for ap in Appeal.objects.filter(start_time__year=expenses.time.year, start_time__month=expenses.time.month):
-                print(ap)
                 t_c = TimeCosts.objects.get(appeal_id=ap.id)
                 production_time += (t_c.twt + t_c.mwt + t_c.tmwt) * ap.quantity
                 production_time_a += (t_c.twt + t_c.mwt + t_c.tmwt + t_c.twd + t_c.mwd + t_c.tmwd + t_c.procurement_work) * ap.quantity
