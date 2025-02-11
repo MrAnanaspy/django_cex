@@ -44,14 +44,25 @@ def testing_act_directory_path_assembling(instance, filename):
 def solid_cam_project_directory_path_assembling(instance, filename):
     return 'assembling/{0}/solid_cam_project/{1}'.format(instance.EAM, filename)
 
+class NameMaterials(models.Model):
+    name = models.CharField(max_length=50, verbose_name='Название', primary_key=True)
+
+    def __str__(self):
+        return f"{self.name}"
+
+    class Meta:
+        db_table = "MaterialsName"
+        verbose_name_plural = 'Материалы'
+
 
 class Detail(models.Model):
     EAM = (models.CharField
            (max_length=20, primary_key=True))
     name = (models.CharField
             (max_length=100, verbose_name='Название', null=True, blank=True))
-    material = (models.CharField
-            (max_length=100, verbose_name='Материал и размер заготовки', null=True, blank=True))
+    mater = models.ForeignKey(NameMaterials, on_delete=models.CASCADE, verbose_name='Материал', null=True, blank=True)
+    size = (models.CharField
+                (max_length=100, verbose_name='Размер заготовки', null=True, blank=True))
     photo = (models.ImageField
              (max_length=260, verbose_name='Ссылка на фото', upload_to=image_directory_path, null=True, blank=True))
     model = (models.FileField
@@ -91,8 +102,9 @@ class Assembling(models.Model):
     EAM = models.ForeignKey(Detail, on_delete=models.CASCADE, verbose_name='Деталь')
     name = (models.CharField
             (max_length=100, verbose_name='Название', null=True, blank=True))
-    material = (models.CharField
-                (max_length=100, verbose_name='Материал и размер заготовки', null=True, blank=True))
+    mater = models.ForeignKey(NameMaterials, on_delete=models.CASCADE, verbose_name='Материал', null=True, blank=True)
+    size = (models.CharField
+            (max_length=100, verbose_name='Размер заготовки', null=True, blank=True))
     model = (models.FileField
              (max_length=260, verbose_name='Ссылка на модель', upload_to=model_directory_path_assembling, null=True, blank=True))
     plan = (models.FileField
@@ -157,7 +169,7 @@ class Materials(models.Model):
 
     class Meta:
         db_table = "Materials"
-        verbose_name_plural = 'Материалы'
+        verbose_name_plural = 'Материалы точные'
 
 
 class Materials3D(models.Model):

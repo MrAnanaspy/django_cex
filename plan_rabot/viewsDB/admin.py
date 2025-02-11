@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Appeal, Detail, Materials, Materials3D, Equipment, AdditionalEexpenses, TimeCosts, Expenses, \
-    Assembling
+    Assembling, NameMaterials
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.html import format_html
@@ -62,10 +62,15 @@ class DetailAdmin(admin.ModelAdmin):
     plan_link.short_description = 'Чертеж'
 
 
-@admin.register(Materials)
+'''@admin.register(Materials)
 class MaterialAdmin(admin.ModelAdmin):
     list_display = ('name', 'shape', 'width', 'long', 'height', 'certificate', 'melting', 'party')
-    list_filter = ('name', 'shape')
+    list_filter = ('name', 'shape')'''
+
+
+@admin.register(NameMaterials)
+class NameMaterialAdmin(admin.ModelAdmin):
+    list_display = ('name',)
 
 
 @admin.register(Expenses)
@@ -74,10 +79,10 @@ class ExpensesAdmin(admin.ModelAdmin):
     list_filter = ('time',)
 
 
-@admin.register(Materials3D)
+'''@admin.register(Materials3D)
 class Material3dAdmin(admin.ModelAdmin):
     list_display = ('name', 'printing_technology', 'quantity')
-    list_filter = ('name', 'printing_technology')
+    list_filter = ('name', 'printing_technology')'''
 
 
 #AdditionalEexpenses
@@ -123,7 +128,7 @@ class EquipmentAdmin(admin.ModelAdmin):
     list_filter = ('name', 'type')'''
 
 
-@admin.register(TimeCosts)
+'''@admin.register(TimeCosts)
 class TimeCostsAdmin(admin.ModelAdmin):
     list_display = ('name_detail', 'img_detail', 'twt', 'mwt', 'tmwt', 'procurement_work')
 
@@ -140,7 +145,7 @@ class TimeCostsAdmin(admin.ModelAdmin):
                                .format(Appeal.objects.get(id=obj.appeal_id_id).EAM.photo.url))
 
     img_detail.allow_tags = True
-    img_detail.short_description = 'Фото/Рендер детали'
+    img_detail.short_description = 'Фото/Рендер детали' '''
 
 
 @receiver(post_save, sender=Detail)
@@ -163,8 +168,8 @@ def add_material(sender, instance, created, **kwargs):
     if created:
         pass
 
-
-@receiver(post_save, sender=Appeal)
+# Генерация TimeCost object при создании Apeal
+'''@receiver(post_save, sender=Appeal)
 def add_appeal(sender, instance, created, **kwargs):
     if created:
         TimeCosts.objects.create(
@@ -176,4 +181,4 @@ def add_appeal(sender, instance, created, **kwargs):
                                  tmwt=instance.EAM.tmwt,
                                  tmwd=instance.EAM.tmwd,
                                  procurement_work=instance.EAM.procurement_work
-                                 )
+                                 )'''
