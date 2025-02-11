@@ -45,9 +45,9 @@ def generate_production_plan():
 
 
         #const
-        time = time_cost.twt + time_cost.twd + time_cost.mwt + time_cost.mwd + time_cost.tmwt + time_cost.tmwd + time_cost.procurement_work
-        time_a = time_cost.twt + time_cost.mwt + time_cost.tmwt
-        time_b = time_cost.twt + time_cost.mwt + time_cost.tmwt + time_cost.twd + time_cost.mwd + time_cost.tmwd
+        time = time_cost.twt + time_cost.twd + time_cost.mwt + time_cost.mwd + time_cost.ewt + time_cost.ewd + time_cost.procurement_work
+        time_a = time_cost.twt + time_cost.mwt + time_cost.ewt
+        time_b = time_cost.twt + time_cost.mwt + time_cost.tmwt + time_cost.twd + time_cost.mwd + time_cost.ewd
         count += 1
 
         # add id
