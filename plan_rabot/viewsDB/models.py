@@ -261,7 +261,6 @@ class Appeal(models.Model):
     quantity = models.IntegerField(verbose_name='Количество')
     responsible_client = models.CharField(max_length=30, verbose_name='Ответственный заказчик и контактная информация')
     branch = models.CharField(max_length=30, choices=BRANCH, default='accept', verbose_name='Филиал')
-    material = models.ForeignKey(Materials, on_delete=models.CASCADE, max_length=100, verbose_name='Материал', null=True, blank=True)
     product_contact = (models.BooleanField(verbose_name='Контакт с продуктом'))
     startAppeal_time = (models.DateField(verbose_name='Время подачи заявки', null=True, blank=True))
     start_time = (models.DateField(verbose_name='Время начала изготовления', null=True, blank=True))
