@@ -1,148 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <!-- table-layout: fixed; -->
-    <style>
-.table {
-  width: 100%;
-	max-width: 1500px;
-  overflow-x: auto;
-	border: none;
-	margin-bottom: 20px;
-  margin-left: auto;
-  margin-right:auto ;
-  text-align: center;
-  vertical-align: middle;
-}
-table thead, table tbody{
-  width: 90%;
-	max-width: 1500px;
-}
-.table thead th {
-	font-weight: bold;
-	text-align: center;
-	border: none;
-	padding: 10px 15px;
-	background: #d8d8d8;
-	font-size: 14px;
-	border-left: 1px solid #ddd;
-	border-right: 1px solid #ddd;
-}
-.table tbody td {
-	
-	border-left: 1px solid #ddd;
-	border-right: 1px solid #ddd;
-	padding: 10px 15px;
-	font-size: 14px;
-  text-align: center;
-  vertical-align: middle;
-}
-.table thead tr th:first-child, .table tbody tr td:first-child {
-	border-left: none;
-}
-.table thead tr th:last-child, .table tbody tr td:last-child {
-	border-right: none;
-}
-.table tbody tr:nth-child(even){
-	background: #f3f3f3;
-}
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>Таблица размеров обуви</title>
+     <style type="text/css">
+   TABLE {
+    width: 100%; /* Ширина таблицы */
+    height: 100%; /* Высота таблицы */
+   }
+  </style>
+ </head>
+ <body>
 
-    </style>
-</head>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-<script nomodule src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js"></script>
-<body>
-<script>
-    {% for item in json1 %}
-                          <tr>
-        <td>{{item.EAM}}</td>
-        <td>{{item.quantity}}</td>
-        <td>{{item.responsible_client}}</td>
-        <td>{{item.branch}}</td>
-        <td>{{item.product_contact}}</td>
-        <td>{{item.startAppeal_time}}</td>
-        <td>{{item.end_time}</td>
-        <td>{{item.machine}}</td>
-        <td>{{item.quantity_defect}}</td>
-      </tr>
-    {% endfor %}
-</script>
-  <table class="table">
-    <thead>
-      <tr class="name_NotSql">
-        <th>Сегодня</th>
-        <th>date</th>
-        <th colspan="6">Инфо по заявке</th>
-        <th colspan="5">Затраты денежные</th>
-        <th colspan="2"></th>
-        <th colspan="2">Временные рамки	</th>
-        <th colspan="4">Стастус</th>
-      </tr>
-    </thead>
-    <tbody id="data-table">
-      <form action="">
-      <tr>
-        <td>№</td>
-        <td>№ EAM</td>
-        <td>отв. Заказчик</td>
-        <td>Филлиал</td>
-        <td>Кол-во шт. в партии</td>
-        <td>Контакт с продуктом</td>
-        <td>Ссылка на заявку</td>
-        <td>СВЦ</td>
-        <td>Прямые затраты на заготовки, Руб</td>
-        <td>Затраты на инструмент/оснастку, руб</td>
-        <td>Затраты на персонал  (Все задание), руб</td>
-        <td>Амортизация</td>
-        <td>затраты на электричество (все задание), руб</td>
-        <td>Стоимость 1 ЗЧ, руб</td>
-        <td>Экономия с партии</td>
-        <td>Дата начала производства</td>
-        <td>Дата выпуска партии</td>
-        <td>Статус производства</td>
-        <td>Статус готовности документации</td>
-        <td>Статус наличия заготовок</td>
-        <td>Статус наличия инструмента</td>
-      </tr>
-           {% for item in data %}
-          <tr>
-              <td>{{item.id}}</td>
-              <td>{{item.EAM}}</td>
-              <td>{{item.responsible_client}}</td>
-              <td>{{item.branch}}</td>
-              <td>{{item.quantity}}</td>
-              <td>{{item.product_contact}}</td>
-              <td>{{item.link}}</td>
-              <td>{{item.EAM.AWP}}₽</td>
-              <td>{{item.material_price}}</td>
-              <td>{{item.equipment_price}}</td>
-              <td>{{item.quantity_defect}}</td>
-
-              <td>{{item}}</td>
-              <td>{{item}}₽</td>
-              <td>{{item}}</td>
-              <td>{{item}}</td>
-              <td>{{item.start_time}}</td>
-              <td>{{item.end_time}}</td>
-              <td>{{item.production_status}}</td>
-              <td>{{item.ready_status}}</td>
-              <td><img src="{{item.EAM.photo.url}}" style="max-width:100px; max-height:100px"> </td>
-              <td>
-                  <model-viewer
-                      src="{{item.EAM.model.url}}"
-                      alt="A 3D model of an astronaut"
-                      auto-rotate
-                      camera-controls>
-                  </model-viewer>
-              </td>
-      </tr>
-    {% endfor %}
-      </form>
-
-    </tbody>
+  <table border="1" align="left">
+   <caption><h1>План работ на {{datetime}}</h1></caption>
+   <tr>
+    <th align="center">Деталь</th>
+    <th align="center">Кол-во</th>
+    <th>Материал</th>
+    <th>Станки</th>
+    <th>Фото</th>
+    <th>Дата начала изготовления</th>
+    <th>Дата окончания изготовления</th>
+    <th>Срочность</th>
+    <th>Ссылка на проэкт</th>
+   </tr >
+      {% for d in data %}
+        <tr>
+            <td bgcolor="green">{{d.EAM}}</td>
+            <td>{{d.quantity}}</td>
+            <td>{{d.EAM.mater}}</td>
+            <td>{{d.machine}}</td>
+            <td><img src="{{d.EAM.photo.url}}" style="max-width:100px; max-height:100px"/></td>
+            <td>{{d.start_time}}</td>
+            <td>{{d.end_time}}</td>
+            <td>{{d.speed}}</td>
+            <td><a href="http://127.0.0.1:8000/admin/viewsDB/detail/{{d.EAM.EAM}}"> Ссылка на деталь</a></td>
+        </tr>
+      {% endfor %}
   </table>
-</body>
+ </body>
 </html>

@@ -281,6 +281,7 @@ class Appeal(models.Model):
     class Meta:
         db_table = "Appeal"
         verbose_name_plural = 'План'
+        ordering = ['speed']
 
 
 class TimeCosts(models.Model):
