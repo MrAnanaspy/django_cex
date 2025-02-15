@@ -3,6 +3,7 @@ from django.shortcuts import render
 from openpyxl.styles import PatternFill
 import configparser
 from .models import Appeal, TimeCosts, Expenses
+from .forms import DetailForm
 import datetime
 from django.db.models import Q
 
@@ -14,9 +15,12 @@ def get_data(request):
 
 def index(request):
     date_now = datetime.date.today()
-    data = Appeal.objects.filter(Q(end_time__year=date_now.year, end_time__month=date_now.month) | Q(start_time__year=date_now.year, start_time__month=date_now.month) | Q(speed='I') | Q(speed='II'))
+    data = Appeal.objects.filter(((Q(end_time__gte=date_now) | Q(end_time=None)) & (Q(end_time__year=date_now.year, end_time__month=date_now.month) | Q(start_time__year=date_now.year, start_time__month=date_now.month))) | Q(speed='I') | Q(speed='II'))
     return render(request, "index.html", context={'data':data, 'datetime':date_now}) #, context={'data':data}
 
+def detail_view(request):
+    form = DetailForm()
+    return render(request, 'detail.html', {'form': form})
 
 def generate_production_plan():
     config = configparser.ConfigParser()  # создаём объекта парсера

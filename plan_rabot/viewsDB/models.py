@@ -26,6 +26,9 @@ def testing_act_directory_path(instance, filename):
 def solid_cam_project_directory_path(instance, filename):
     return '{0}/solid_cam_project/{1}'.format(instance.EAM, filename)
 
+def addition_directory_path(instance, filename):
+    return '{0}/solid_cam_project/{1}'.format(instance.EAM, filename)
+
 #Сохранение данных элементов сборки
 def image_directory_path_assembling(instance, filename):
     return 'assembling/{0}/img/{1}'.format(instance.EAM, filename)
@@ -70,13 +73,13 @@ class Detail(models.Model):
              (max_length=260, verbose_name='Ссылка на модель', upload_to=model_directory_path, null=True, blank=True))
     plan = (models.FileField
             (max_length=260, verbose_name='Ссылка на чертеж', upload_to=plan_directory_path, null=True, blank=True))
-    route_map = (models.FileField
-                 (max_length=260, verbose_name='Ссылка на маршрутный лист', upload_to=route_map_directory_path, null=True, blank=True))
     testing_act = (models.FileField
                    (max_length=260, verbose_name='Ссылка на акт тестирования', upload_to=testing_act_directory_path, null=True, blank=True))
     solid_cam_project = (models.FileField
                          (max_length=260, verbose_name='Ссылка на SolidCam проэкт', upload_to=solid_cam_project_directory_path,
                              null=True, blank=True))
+    addition = (models.FileField
+             (max_length=260, verbose_name='Ссылка на модель', upload_to=addition_directory_path, null=True, blank=True))
     AWP = (models.IntegerField(verbose_name="Средневзвешенная цена", default=0))
     twt = models.FloatField(max_length=30, verbose_name='Время токарной обработки на 1 шт (мин)', default=0)
     twd = models.FloatField(max_length=30, verbose_name='Время простоя токарной обработки на 1 шт (мин)', default=0)
