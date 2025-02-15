@@ -11,7 +11,7 @@ class DetailInline(admin.TabularInline):
 
 @admin.register(Appeal)
 class AppealAdmin(admin.ModelAdmin):
-    list_display = ('EAM', 'quantity', 'start_time', 'image_tag', 'zayavka_link')
+    list_display = ('EAM', 'quantity', 'speed', 'start_time', 'end_time', 'image_tag', 'zayavka_link')
     list_filter = ('start_time', 'speed', 'machine')
     search_fields = ('EAM__name', 'EAM__EAM', 'start_time')
 

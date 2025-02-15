@@ -2,16 +2,16 @@ import openpyxl
 from django.shortcuts import render
 from openpyxl.styles import PatternFill
 import configparser
-from .models import Appeal, TimeCosts, Expenses
+from .models import Appeal, TimeCosts, Expenses, Detail
 from .forms import DetailForm
 import datetime
 from django.db.models import Q
 
 
 def get_data(request):
-    generate_production_plan()
+    #generate_production_plan()
     data = "media/documents/exel/stata_done.xlsx"
-    return render(request, "stata.html", context={'exel':data}) #, context={'data':data}
+    return render(request, "home.html", context={'exel':data}) #, context={'data':data}
 
 def index(request):
     date_now = datetime.date.today()
@@ -19,7 +19,8 @@ def index(request):
     return render(request, "index.html", context={'data':data, 'datetime':date_now}) #, context={'data':data}
 
 def detail_view(request):
-    form = DetailForm()
+    det = Detail.objects.get(EAM='1.182,222,5443')
+    form = DetailForm(instance=det)
     return render(request, 'detail.html', {'form': form})
 
 def generate_production_plan():
@@ -38,7 +39,7 @@ def generate_production_plan():
 
         #color
         color = 'FFFFFF'
-        if appeal.ready_status and appeal.material and appeal.material.status != 'in_stock':
+        if appeal.production_status != 'in_stock':
             color = 'FFFF00'
         elif appeal.end_time and datetime.date.today() < appeal.end_time:
             color = '00B0F0'

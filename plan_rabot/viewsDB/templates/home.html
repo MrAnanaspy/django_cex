@@ -1,23 +1,31 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
-<head>
-    <title>{% block title %}Главная страница{% endblock %}</title>
-</head>
-<body>
-    <header>
-        <h1>BD_CEX</h1>
-    </header>
-
-    <div class="content">
-        {% block content %}
-        {% for d in data %}
-        <p>{{ d.EAM }}</p>
-        {% endfor %}
-        {% endblock %}
+<!-- Header Menu of the Page -->
+<header>
+    <!-- Top header menu containing
+        logo and Navigation bar -->
+    <div id="top-header">
+        <!-- Logo -->
+        <div id="logo">
+                <img src="{% static 'img/logo_yarpivo.jpeg' %}" alt="My image">
+        </div>
+        <!-- Navigation Menu -->
+        <nav>
+            <ul>
+                <li class="active">
+                    <a href="/admin">Админ панель</a>
+                </li>
+                <li>
+                    <a href="/index">План работ</a>
+                </li>
+                <li>
+                    <a href="/detail">Подготвка event calendar</a>
+                </li>
+            </ul>
+        </nav>
     </div>
-
-    <footer>
-        <p>Все права защищены</p>
-    </footer>
-</body>
-</html>
+    <!-- Image menu in Header to contain an Image and
+        a sample text over that image -->
+    <div id="header-image-menu">
+    </div>
+</header>

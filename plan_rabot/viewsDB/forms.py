@@ -1,8 +1,6 @@
 from django import forms
 from django.core.validators import validate_image_file_extension
 from django.utils.translation import gettext as _
-
-
 from .models import Detail
 
 
@@ -12,9 +10,9 @@ from .models import Detail
 class DetailForm(forms.ModelForm):
     class Meta:
         model = Detail
-        fields = ['EAM', 'addition', 'model']
+        fields = '__all__'
         labels = {
-            'EAM': 'Имя',
-            'addition': 'Имя',
-            'model': 'Имя',
+            'EAM': 'EAM',
+            'addition': 'addition',
+            'model': 'model',
         }
