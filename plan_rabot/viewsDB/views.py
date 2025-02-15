@@ -9,7 +9,7 @@ from django.db.models import Q
 
 
 def get_data(request):
-    #generate_production_plan()
+    generate_production_plan()
     data = "media/documents/exel/stata_done.xlsx"
     return render(request, "home.html", context={'exel':data}) #, context={'data':data}
 
@@ -39,7 +39,7 @@ def generate_production_plan():
 
         #color
         color = 'FFFFFF'
-        if appeal.production_status != 'in_stock':
+        if appeal.production_status:
             color = 'FFFF00'
         elif appeal.end_time and datetime.date.today() < appeal.end_time:
             color = '00B0F0'
@@ -47,7 +47,7 @@ def generate_production_plan():
             color = '00D050'
 
         #objects
-        time_cost = TimeCosts.objects.get(appeal_id_id=appeal.id)
+        time_cost = appeal.EAM
         if appeal.start_time and Expenses.objects.filter(time__year=appeal.start_time.year, time__month=appeal.start_time.month).exists():
             expenses = Expenses.objects.get(time__year=appeal.start_time.year, time__month=appeal.start_time.month)
         else:
@@ -57,7 +57,7 @@ def generate_production_plan():
         #const
         time = time_cost.twt + time_cost.twd + time_cost.mwt + time_cost.mwd + time_cost.ewt + time_cost.ewd + time_cost.procurement_work
         time_a = time_cost.twt + time_cost.mwt + time_cost.ewt
-        time_b = time_cost.twt + time_cost.mwt + time_cost.tmwt + time_cost.twd + time_cost.mwd + time_cost.ewd
+        time_b = time_cost.twt + time_cost.mwt + time_cost.ewt + time_cost.twd + time_cost.mwd + time_cost.ewd
         count += 1
 
         # add id
