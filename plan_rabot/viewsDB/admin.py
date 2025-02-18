@@ -4,6 +4,8 @@ from .models import Appeal, Detail, Materials, Materials3D, Equipment, Additiona
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.html import format_html
+import openpyxl
+import configparser
 
 
 class DetailInline(admin.TabularInline):
@@ -11,7 +13,7 @@ class DetailInline(admin.TabularInline):
 
 @admin.register(Appeal)
 class AppealAdmin(admin.ModelAdmin):
-    list_display = ('EAM', 'quantity', 'speed', 'start_time', 'end_time', 'image_tag', 'zayavka_link')
+    list_display = ('EAM', 'quantity', 'speed', 'start_time', 'end_time', 'image_tag', 'zayavka_link', 'msk_link')
     list_filter = ('start_time', 'speed', 'machine')
     search_fields = ('EAM__name', 'EAM__EAM', 'start_time')
 
@@ -25,6 +27,18 @@ class AppealAdmin(admin.ModelAdmin):
             return format_html('<a href="{}">Ссылка на заявку</a>'.format(obj.link))
         else:
             return "Нет ссылки"
+
+    zayavka_link.allow_tags = True
+    zayavka_link.short_description = 'Ссылка'
+
+    def msk_link(self, obj):
+        config = configparser.ConfigParser()  # создаём объекта парсера
+        config.read("config.ini")
+
+        wb = openpyxl.load_workbook("media/documents/exel/MSK.xlsx")
+        sheet = wb.active
+
+        sheet.cell(row=1, column=1, value=1)
 
     zayavka_link.allow_tags = True
     zayavka_link.short_description = 'Ссылка'
