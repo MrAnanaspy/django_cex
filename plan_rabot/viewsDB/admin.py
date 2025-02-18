@@ -6,6 +6,7 @@ from django.dispatch import receiver
 from django.utils.html import format_html
 import openpyxl
 import configparser
+import os
 
 
 class DetailInline(admin.TabularInline):
@@ -37,9 +38,52 @@ class AppealAdmin(admin.ModelAdmin):
 
         wb = openpyxl.load_workbook("media/documents/exel/MSK.xlsx")
         sheet = wb.active
+        # № appeal
+        sheet.cell(row=10, column=2, value=obj.id)
+        # EAM
+        sheet.cell(row=10, column=3, value=obj.EAM.EAM)
+        # Name
+        sheet.cell(row=10, column=7, value=obj.EAM.name)
+        # EAM
+        sheet.cell(row=12, column=11, value=obj.EAM.size)
+        # Quantity
+        sheet.cell(row=12, column=12, value=obj.quantity)
+        # Material
+        sheet.cell(row=10, column=13, value=obj.EAM.mater.name)
+        # № MSK
+        sheet.cell(row=6, column=6, value="Маршрутно-сопроводительная карта (МСК) №__" + obj.start_time.strftime('%y') + str(obj.id) + '__')
 
-        sheet.cell(row=1, column=1, value=1)
+        dat = []
+        # Заготовительня
+        if obj.EAM.procurement_work != 0:
+            dat.append('Заготовительная')
 
+        if 'electroerosion' in obj.machine:
+            dat.append('Электроэрозионная')
+
+        if 'turning_milling' in obj.machine:
+            dat.append('Токарно-фрезерная')
+        else:
+            # Токарная
+            if 'turning' in obj.machine:
+                dat.append('Токарная')
+
+            # Фрезерная
+            if 'milling' in obj.machine:
+                dat.append('Фрезерная')
+
+
+        dat.append('Постобработка')
+        dat.append('Упаковка')
+        num = 1
+        for i in dat:
+            sheet.cell(row=15+(num * 2), column=3, value=i)
+            sheet.cell(row=15+(num * 2), column=2, value=num)
+            num+=1
+
+        wb.save('media/{0}/addition/MSK_{1}.xlsx'.format(obj.EAM.EAM, obj.EAM.EAM))
+
+        return format_html('<a href="{0}">Сгенерировать МСК</a>'.format("/media/" + obj.EAM.EAM + "/addition/MSK_" + obj.EAM.EAM + ".xlsx"))
     zayavka_link.allow_tags = True
     zayavka_link.short_description = 'Ссылка'
 
@@ -183,10 +227,10 @@ def add_material(sender, instance, created, **kwargs):
         pass
 
 # Генерация TimeCost object при создании Apeal
-'''@receiver(post_save, sender=Appeal)
+@receiver(post_save, sender=Appeal)
 def add_appeal(sender, instance, created, **kwargs):
     if created:
-        TimeCosts.objects.create(
+        '''TimeCosts.objects.create(
                                 appeal_id_id = instance.id,
                                  twt= instance.EAM.twt,
                                  twd=instance.EAM.twd,
@@ -196,3 +240,4 @@ def add_appeal(sender, instance, created, **kwargs):
                                  tmwd=instance.EAM.tmwd,
                                  procurement_work=instance.EAM.procurement_work
                                  )'''
+        os.mkdir('media/{0}/addition'.format(instance.EAM.EAM))

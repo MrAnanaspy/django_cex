@@ -241,6 +241,7 @@ class Appeal(models.Model):
         ('milling', 'Фрезерный'),
         ('turning', 'Токарный'),
         ('turning_milling', 'Токарно фрезерный'),
+        ('electroerosion', 'Электроэрозионный'),
         ('fdm', 'FDM принтер'),
         ('sla', 'SLA принтер'),
     )
