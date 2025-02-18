@@ -33,6 +33,8 @@ class AppealAdmin(admin.ModelAdmin):
     zayavka_link.short_description = 'Ссылка'
 
     def msk_link(self, obj):
+        if os.path.isdir('media/{0}/addition'.format(obj.EAM.EAM)):
+            os.mkdir('media/{0}/addition'.format(obj.EAM.EAM))
         config = configparser.ConfigParser()  # создаём объекта парсера
         config.read("config.ini")
 
