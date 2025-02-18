@@ -51,7 +51,8 @@ class AppealAdmin(admin.ModelAdmin):
         # Quantity
         sheet.cell(row=12, column=12, value=obj.quantity)
         # Material
-        sheet.cell(row=10, column=13, value=obj.EAM.mater.name)
+        if obj.EAM.mater:
+            sheet.cell(row=10, column=13, value=obj.EAM.mater.name)
         # № MSK
         sheet.cell(row=6, column=6, value="Маршрутно-сопроводительная карта (МСК) №__" + obj.start_time.strftime('%y') + str(obj.id) + '__')
 
