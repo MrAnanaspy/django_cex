@@ -13,6 +13,28 @@ def get_data(request):
     data = "media/documents/exel/stata_done.xlsx"
     return render(request, "home.html", context={'exel':data}) #, context={'data':data}
 
+def get_event_calendar(request, year, month):
+    if request.method == "GET":
+        appeal = Appeal.objects.filter(Q(start_time__year=year) & (
+                Q(start_time__month=month) | Q(start_time__month=month + 1) | Q(
+            start_time__month=month - 1)))
+        return render(request, "EventCalendar.html", context={'appeal':appeal}) #, context={'data':data}
+    elif request.method == "POST":
+        if 'old' in request.POST:
+            month -= 1
+            if month == 1:
+                month = 12
+                year -=1
+        elif 'new' in request.POST:
+            month += 1
+            if month == 13:
+                year += 1
+                month = 1
+        appeal = Appeal.objects.filter(Q(start_time__year=year) & (
+                    Q(start_time__month=month) | Q(start_time__month=month + 1) | Q(
+                start_time__month=month - 1)))
+        return render(request, "EventCalendar.html", context={'appeal': appeal, 'year':year, 'month':month})  # , context={'data':data}
+
 def index(request):
     date_now = datetime.date.today()
     data = Appeal.objects.filter(((Q(end_time__gte=date_now) | Q(end_time=None)) & (Q(end_time__year=date_now.year, end_time__month=date_now.month) | Q(start_time__year=date_now.year, start_time__month=date_now.month))) | Q(speed='I') | Q(speed='II'))
